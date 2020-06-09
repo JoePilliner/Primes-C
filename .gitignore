@@ -1,0 +1,5 @@
+# Compiled binaries
+bin/primes
+
+# Output data
+out/primelist
