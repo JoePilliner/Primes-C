@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     PRIMALITY number_primality;
     while(number <= number_max)
     {
-        primality(number, &number_primality, (const unsigned long long) sqrtl((long double) number));
+        primality(number, &number_primality, ((const unsigned long long) sqrtl((long double) number)));
         if(number_primality == PRIME) printf("%llu\r\n", number);
         number++;
     }
