@@ -24,7 +24,7 @@ extern inline void primality(const register unsigned long long number, register 
                 return;
             default: for(register unsigned long long factor = 5ULL; factor <= factor_max;)
             {
-                //Numbers not divisible by 2 or 3 and divisible by a factor not divisible by 2 or 3 cannot be prime
+                //Numbers not divisible by 2 or 3 and divisible by a factor greater than or equal to 5 that is not divisible by 2 or 3 and is less than or equal to the maximum factor to be checked cannot be prime
                 switch(number % factor)
                 {
                     case 0ULL:
