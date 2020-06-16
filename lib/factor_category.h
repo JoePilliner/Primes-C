@@ -1,18 +1,19 @@
-typedef enum {COMPOSITE, PRIME, OTHER, UNSURE} PRIMALITY;
+typedef enum {ONE_FACTOR, TWO_FACTORS, GREATER_THAN_TWO_FACTORS, INFINITE_FACTORS, UNSURE} FACTOR_CATEGORY;
 
-extern inline void primality(const register unsigned long long number, register PRIMALITY * restrict primality, const register unsigned long long factor_max)
+extern inline void factor_category(const register unsigned long long number, register FACTOR_CATEGORY * restrict factor_category, const register unsigned long long factor_max)
 {
     switch(number)
     {
         //Hard-coded special cases
         case 0ULL:
+            *factor_category = INFINITE_FACTORS;
         case 1ULL:
-            *primality = OTHER;
+            *factor_category = ONE_FACTOR;
             return;
         case 2ULL:
         case 3ULL:
         case 5ULL:
-            *primality = PRIME;
+            *factor_category = TWO_FACTORS;
             return;
         default: switch(number % 6ULL)
         {
@@ -21,14 +22,14 @@ extern inline void primality(const register unsigned long long number, register 
             case 2ULL:
             case 3ULL:
             case 4ULL:
-                *primality = COMPOSITE;
+                *factor_category = GREATER_THAN_TWO_FACTORS;
                 return;
             default: switch(number % 30ULL)
             {
                 //Numbers divisible by 5 cannot be prime
                 case 5ULL:
                 case 25ULL:
-                    *primality = COMPOSITE;
+                    *factor_category = GREATER_THAN_TWO_FACTORS;
                     return;
                 default: for(register unsigned long long factor = 7ULL; factor <= factor_max;)
                 {
@@ -36,7 +37,7 @@ extern inline void primality(const register unsigned long long number, register 
                     switch(number % factor)
                     {
                         case 0ULL:
-                            *primality = COMPOSITE;
+                            *factor_category = GREATER_THAN_TWO_FACTORS;
                             return;
                         default: switch(factor % 6ULL)
                         {
@@ -47,12 +48,12 @@ extern inline void primality(const register unsigned long long number, register 
                                 factor += 2;
                                 continue;
                             default:
-                                *primality = UNSURE;
+                                *factor_category = UNSURE;
                                 return;
                         }
                     }
                 }
-                *primality = PRIME; return;
+                *factor_category = TWO_FACTORS; return;
             }
         }
     }

@@ -1,4 +1,4 @@
-#include "../lib/primetest.h"
+#include "../lib/factor_category.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
@@ -28,11 +28,11 @@ int main(int argc, char** argv)
         default:
             exit(EXIT_FAILURE);
     }
-    PRIMALITY number_primality;
+    FACTOR_CATEGORY number_factor_category;
     while(number <= number_max)
     {
-        primality(number, &number_primality, ((const unsigned long long) sqrtl((long double) number)));
-        if(number_primality == PRIME) printf("%llu\r\n", number);
+        factor_category(number, &number_factor_category, ((const unsigned long long) sqrtl((long double) number)));
+        if(number_factor_category == TWO_FACTORS) printf("%llu\r\n", number);
         number++;
     }
     exit(EXIT_SUCCESS);
