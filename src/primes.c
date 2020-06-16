@@ -2,13 +2,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+#include <math.h>
 
 int main(int argc, char** argv)
 {
-    unsigned register long long number, number_max;
+    register unsigned long long number, number_max;
     switch(argc)
     {
         case 0:
+            number = 0ULL;
+            number_max = ULLONG_MAX;
+            break;
         case 1:
             number = 0ULL;
             number_max = ULLONG_MAX;
@@ -24,9 +28,11 @@ int main(int argc, char** argv)
         default:
             exit(EXIT_FAILURE);
     }
+    PRIMALITY number_primality;
     while(number <= number_max)
     {
-        if(isprime(number)) printf("%llu\r\n", number);
+        primality(number, &number_primality, (const unsigned long long) sqrtl((long double) number));
+        if(number_primality == PRIME) printf("%llu\r\n", number);
         number++;
     }
     exit(EXIT_SUCCESS);

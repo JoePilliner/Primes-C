@@ -1,34 +1,41 @@
-#include <math.h>
+typedef enum {COMPOSITE, PRIME, OTHER, UNSURE} PRIMALITY;
 
-int isprime(const register unsigned long long number)
+extern inline void primality(const register unsigned long long number, register PRIMALITY *primality, const register unsigned long long factor_max)
 {
     switch(number)
     {
-        case 0ULL:
-        case 1ULL:
-        case 4ULL:
-            return 0;
-        case 2ULL:
-        case 3ULL:
-        case 5ULL:
-            return 1;
-        default:
-            break;
+        //Hard-coded cases
+        case 0ULL: *primality = OTHER; return;
+        case 1ULL: *primality = OTHER; return;
+        case 2ULL: *primality = PRIME; return;
+        case 3ULL: *primality = PRIME; return;
+        default: switch(number % 6ULL)
+        {
+            //Numbers divisible by 2 or 3 cannot be prime
+            case 0ULL: *primality = COMPOSITE; return;
+            case 2ULL: *primality = COMPOSITE; return;
+            case 3ULL: *primality = COMPOSITE; return;
+            case 4ULL: *primality = COMPOSITE; return;
+            default: for(register unsigned long long factor = 5ULL; factor < factor_max;)
+            {
+                switch(number % factor)
+                {
+                    case 0ULL: *primality = COMPOSITE; return;
+                    default: switch(factor % 6ULL)
+                    {
+                        case 1ULL:
+                            factor += 4;
+                            continue;
+                        case 5ULL:
+                            factor += 2;
+                            continue;
+                        default:
+                            *primality = UNSURE; return;
+                    }
+                }
+            }
+            *primality = PRIME; return;
+        }
     }
-    switch(number % 6ULL)
-    {
-        case 1ULL:
-        case 5ULL:
-            break;
-        default:
-            return 0;
-    }
-    register unsigned long long factor = 5ULL;
-    const register unsigned long long factor_max = (unsigned long long) sqrtl((long double) number);
-    while(factor < factor_max)
-    {
-        if(number % factor == 0) return 0;
-        factor += 6 - ((2 * (factor % 6)) % 6);
-    }
-    return 1;
+    *primality = UNSURE; return;
 }
