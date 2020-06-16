@@ -7,6 +7,7 @@ extern inline void factor_category(const register unsigned long long number, reg
         //Hard-coded special cases
         case 0ULL:
             *factor_category = INFINITE_FACTORS;
+            return;
         case 1ULL:
             *factor_category = ONE_FACTOR;
             return;
