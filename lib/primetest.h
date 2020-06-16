@@ -18,6 +18,7 @@ extern inline void primality(const register unsigned long long number, register 
             case 4ULL: *primality = COMPOSITE; return;
             default: for(register unsigned long long factor = 5ULL; factor < factor_max;)
             {
+                //Numbers not divisible by 2 or 3 and divisible by a factor not divisible by 2 or 3 cannot be prime
                 switch(number % factor)
                 {
                     case 0ULL: *primality = COMPOSITE; return;
